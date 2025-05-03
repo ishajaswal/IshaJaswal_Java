@@ -1,12 +1,8 @@
 package package1;
-
 import java.util.ArrayList;
-
-
 import java.util.HashMap;
 
 class BankingSystem {
-    
     
     static class Customer {
         String name;
