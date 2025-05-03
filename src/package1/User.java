@@ -1,15 +1,11 @@
 package package1;
 import java.util.Scanner;
 
-
-
 class InvalidLoginException extends Exception {
  public InvalidLoginException(String message) {
      super(message);
  }
 }
-
-
 
 public class User {
 
