@@ -1,7 +1,4 @@
 package package1;
-
-
-
 import java.sql.*;
 import java.util.Scanner;
 
