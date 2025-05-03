@@ -1,7 +1,4 @@
 package package1;
-
-
-
 import java.sql.*;
 
 public class DB {
