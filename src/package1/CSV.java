@@ -1,12 +1,8 @@
 package package1;
-
 import java.io.*;
-
 import java.util.*;
-
 public class CSV {
 
-    
     public static void saveDataToCSV(String fileName, List<String[]> data) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
             for (String[] row : data) {
