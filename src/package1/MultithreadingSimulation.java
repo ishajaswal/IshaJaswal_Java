@@ -1,37 +1,78 @@
 package package1;
 import java.util.*;
+
+
+        
+class OddNumberPrinter implements Runnable {
+    private final MultithreadingSimulation obj;
+
+    public OddNumberPrinter(MultithreadingSimulation obj) {
+        this.obj = obj;
+    }
+
+    public void run() {
+        obj.generateOddNumbers();
+    }
+}
+
+class EvenNumberPrinter implements Runnable {
+    private final MultithreadingSimulation obj;
+
+    public EvenNumberPrinter(MultithreadingSimulation obj) {
+        this.obj = obj;
+    }
+
+    public void run() {
+        obj.generateEvenNumbers();
+    }
+}
+
 public class MultithreadingSimulation {
+    public static final int N = 10;
+    private int count = 1;
 
-    private static final Object lock = new Object();
-    private static int number = 1;
-
-    static class Printer extends Thread {
-        private boolean isOdd;
-
-        Printer(boolean isOdd) {
-            this.isOdd = isOdd;
-        }
-
-        public void run() {
-            while (number <= 100) {
-                synchronized (lock) {
-                    if ((number % 2 == 0) == !isOdd) {
-                        System.out.println(number++);
-                        lock.notify();
-                    } else {
-                        try {
-                            lock.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+    public void generateEvenNumbers() {
+        synchronized (this) {
+            while (count < N) {
+                while (count % 2 == 1) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
+                System.out.println("Even Number thread : " + count);
+                count++;
+                notify();
+            }
+        }
+    }
+
+    public void generateOddNumbers() {
+        synchronized (this) {
+            while (count < N) {
+                while (count % 2 == 0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("Odd Number thread : " + count);
+                count++;
+                notify();
             }
         }
     }
 
     public static void main(String[] args) {
-        new Printer(true).start();  
-        new Printer(false).start(); 
+        MultithreadingSimulation sharedObject = new MultithreadingSimulation();
+
+        Thread evenThread = new Thread(new EvenNumberPrinter(sharedObject));
+        Thread oddThread = new Thread(new OddNumberPrinter(sharedObject));
+
+        evenThread.start();
+        oddThread.start();
     }
 }
+
